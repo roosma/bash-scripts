@@ -32,8 +32,9 @@ loop_directory () {
 
 if [ $# -eq 0 ]
 then
-	echo "A bash script for changing the created and modified dates of files based on the content created date"
+	echo "A bash script for changing the created and modified dates of files to the content created date"
 	echo "Usage: ./change_date.sh FILE|FOLDER"
+	echo "If a folder is given as input the script will go through it recursively"
 else
 	if [ -d $1 ]
 	then
