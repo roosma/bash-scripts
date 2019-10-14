@@ -6,19 +6,15 @@ GREEN="\033[0;32m" # Green color
 YELLOW="\033[1;33m" # Yellow color
 BLUE="\033[0;35m" # Yellow color
 NC="\033[0m" # No Color
-OIFS="$IFS" # Save old IFS (Internal Field Separator)
-
-# Enable spaces to work in folder/file-names by changing the IFS
-IFS=$"\n"
 
 # Function for changing the actuall date of a file
 change_date () {
-	file=$1
-	if [[ $file == *.jpg ]] || [[ $file == *.png ]]
+	file="${1}"
+	if [[ "${file}" == *.jpg ]] || [[ "${file}" == *.jpeg ]] || [[ "${file}" == *.png ]]# || [[ $file == *.mov ]]
 	then
 		# Get the creation date and the content creation date
-		createdDate=$(mdls $file -name kMDItemFSCreationDate -raw)
-		newDate=$(mdls $file -name kMDItemContentCreationDate -raw)
+		createdDate=$(mdls ${file} -name kMDItemFSCreationDate -raw)
+		newDate=$(mdls ${file} -name kMDItemContentCreationDate -raw)
 
 		# If the dates differ then change them to the content creation date
 		if [[ $createdDate != $newDate ]]
@@ -31,7 +27,7 @@ change_date () {
 
 			# Formate date before setting it to file
 			newDateFormated=$(date -j -f "%Y-%m-%d %H:%M:%S %z" "$newDate" +"%m/%d/%Y %H:%M:%S %z")
-			SetFile -d "$newDateFormated" -m "$newDateFormated" $file
+			SetFile -d "$newDateFormated" -m "$newDateFormated" "${file}"
 
 			# Increment counter
 			changed=$((changed + 1))
@@ -41,15 +37,15 @@ change_date () {
 
 # Loop content in a directory
 loop_directory () {
-	for file in $1/*
+	for file in "${1}"/*
 	do
 		# Check if directory or file
-		if [ -d $file ]
+		if [ -d "${file}" ]
 		then
 			printf "${BLUE}ENTERING DIRECTORY:${NC} ${file}\n"
-			loop_directory $file
+			loop_directory "${file}"
 		else
-			change_date $file
+			change_date "${file}"
 		fi
 	done
 }
@@ -64,14 +60,12 @@ else
 	# Init counter (will only be shown if input is directory)
 	changed=0
 
-	if [ -d $1 ]
+	if [ -d "${1}" ]
 	then
-		loop_directory $1
+		loop_directory "${1}"
 
 		printf "\n${GREEN}${changed} FILES CHANGED${NC}\n\n"
 	else
-		change_date $1
+		change_date "${1}"
 	fi
 fi
-
-IFS="$OIFS" # Set back original IFS
