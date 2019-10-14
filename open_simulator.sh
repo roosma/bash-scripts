@@ -19,6 +19,7 @@ do
 		break
 	elif [[ ( $sim_type == "q" ) || ( $sim_type == "Q" ) ]]
 	then
+		clear
 		exit 0
 	fi
 done
@@ -37,6 +38,7 @@ then
 
 	if [[ ( $with_dns == "q" ) || ( $with_dns == "Q" ) ]]
 	then
+		clear
 		exit 0
 	fi
 
@@ -92,6 +94,7 @@ do
 
 	if [[ ( $sim_number == "q" ) || ( $sim_number == "Q" ) ]]
 	then
+		clear
 		exit 0
 	fi
 done
